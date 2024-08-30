@@ -1,0 +1,12 @@
+credentials:
+  usernames:
+    ctv:
+      name: CTV
+      password: $2b$12$cKgJMTvfwwUq8yNbT/IyMeT3iVxJmUcS8FtNQp6ke1uLxsY9aAXaW # To be replaced with hashed password (abc)
+    rbriggs:
+      name: Rebecca Briggs
+      password: $2b$12$qFKHmnaxikHw0liiQJ.zEe6lQGYjKiQTnpVYNPlNirQZzes8i2euK # To be replaced with hashed password
+cookie:
+  expiry_days: 1
+  key: test123 # Must be string
+  name: aiaivn123
