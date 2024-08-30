@@ -179,7 +179,7 @@ def get_json_content(file_path: str) -> dict:
 # client = pymongo.MongoClient("mongodb+srv://root:123@cluster0.ss6bc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", server_api=ServerApi('1'))
 @st.cache_resource
 def init_connection():
-    return pymongo.MongoClient(st.secrets["mongo"])
+    return pymongo.MongoClient(st.secrets["mongo"], server_api=ServerApi('1'))
 
 client = init_connection()
 
