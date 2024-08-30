@@ -176,7 +176,8 @@ def get_json_content(file_path: str) -> dict:
  
  
 # MongoDB setup
-client = pymongo.MongoClient("mongodb+srv://root:123@cluster0.ss6bc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", server_api=ServerApi('1'))
+# client = pymongo.MongoClient("mongodb+srv://root:123@cluster0.ss6bc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", server_api=ServerApi('1'))
+client = pymongo.MongoClient("mongodb+srv://root:123@cluster0.ss6bc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 db = client['database']
 collection = db['new_info_DN']
  
