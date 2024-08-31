@@ -1,5 +1,4 @@
 pymongo==4.8.0
-PyYAML==5.4.1
 PyYAML==6.0.2
 streamlit==1.38.0
 streamlit_authenticator==0.3.3
