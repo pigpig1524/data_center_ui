@@ -25,6 +25,9 @@ import time
 #     st.switch_page("pages/Home.py")
 # # st.rerun(scope='app')
 
+# Make the dialog for user confirm logout request
+# This function use 'sure_to_logout' key in session_state
+
 def logout_sure():
     st.session_state['sure_to_logout'] = True
 
@@ -38,6 +41,9 @@ def logout_confirm():
     if yes_button or no_button:
         st.rerun()
 
+
+# If user confirm sure to log out, the app wwil execute log out without render the og out button
+# Else, switch to the home page
 
 if 'sure_to_logout' not in st.session_state:
     logout_confirm()

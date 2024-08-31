@@ -11,10 +11,10 @@ tasks_page = st.Page("pages/Tasks.py", title="Your tasks", icon=":material/task:
 
 
 if Helper.get_authen_status():
-    # profile_page = st.Page("pages/Profile.py", title=f"Hi, {st.session_state['name']}", icon=":material/person:")
+    profile_page = st.Page("pages/Profile.py", title=f"Hi, {st.session_state['name']}", icon=":material/person:")
     pg = st.navigation(
         pages={
-            "Account": [logout_page],
+            "Account": [logout_page, profile_page],
             "Dashboard": [home_page, tasks_page]
         }
     )
