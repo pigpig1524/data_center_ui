@@ -4,7 +4,7 @@ import yaml
 from yaml.loader import SafeLoader
 import time
 
-
+# Cofig user details at users.yaml, se toml format in the future
 with open('./users.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
