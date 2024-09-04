@@ -156,8 +156,13 @@ from bson import *
 from streamlit_quill import st_quill
 from pymongo.server_api import ServerApi
  
- 
- 
+uri = st.secrets["connection_string"]
+
+@st.cache_resource
+def init_connection():
+    return pymongo.MongoClient(uri, server_api=ServerApi('1'))
+
+
 def get_json_content(file_path: str) -> dict:
     """
     Get the content of json file consists of raw data
@@ -176,10 +181,34 @@ def get_json_content(file_path: str) -> dict:
  
  
 # MongoDB setup
-client = pymongo.MongoClient("mongodb+srv://root:123@cluster0.ss6bc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", server_api=ServerApi('1'))
+# client = pymongo.MongoClient("mongodb+srv://root:123@cluster0.ss6bc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", server_api=ServerApi('1'))
+
+client = init_connection()
 db = client['database']
 collection = db['new_info_DN']
- 
+
+# Config editor toolbar 
+toolbar=[
+            [
+                "bold", "italic", "underline", "strike"
+            ],
+            [
+                {"background": []},
+                {"color": [] },
+            ],          
+            [
+                {"list": "ordered"},
+                {"list": "bullet"}
+            ],
+            [
+                {"header": [1, 2, 3, 4, 5, 6, False]},
+                {"size": ["small", False, "large", "huge"]},
+            ],
+            [
+                "link", "image"
+            ]
+]
+
  
  
 # Function to get all the current ids in the MongoDB
@@ -253,7 +282,8 @@ with st.form(key=gen_key(doc_id, "form")):
     for section, field, label in edit_fields:
         if section in content and field in content[section]:
             st.write(f"**{label}**")
-            content[section][field] = st.text_area(label=f"Edit {label}", value=content[section][field], height=150)
+            # content[section][field] = st.text_area(label=f"Edit {label}", value=content[section][field], height=150)
+            content[section][field] = st_quill(value=content[section][field], toolbar=toolbar)
  
     submit = st.form_submit_button("Save Changes")
     if submit:
