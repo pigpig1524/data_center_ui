@@ -160,7 +160,7 @@ uri = st.secrets["connection_string"]
 
 @st.cache_resource
 def init_connection():
-    return pymongo.MongoClient(uri, server_api=ServerApi('1'))
+    return pymongo.MongoClient(st.secrets["connection_string"], server_api=ServerApi('1'))
 
 
 def get_json_content(file_path: str) -> dict:
