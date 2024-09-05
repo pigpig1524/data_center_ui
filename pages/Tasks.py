@@ -201,9 +201,7 @@ toolbar=[
                 {"list": "bullet"}
             ],
             [
-                {"header": [1, 2, 3, 4, 5, 6, False]},
-                {"size": ["small", False, "large", "huge"]},
-            ],
+                {"header": [1, 2, 3, 4, 5, 6, False]}            ],
             [
                 "link", "image"
             ]
@@ -253,10 +251,39 @@ doc_id =  ids_by_category[category][html_id]
  
  
 content = get_json_from_mongo(doc_id)
- 
+
+
+search_queries = {
+    "Nhà hàng": {
+        "Giới thiệu": "Giới thiệu",
+        "Các món ăn": "Các món ăn",
+        "Trải nghiệm": "Trải nghiệm",
+        "Giao hàng tận nhà": "Giao hàng tận nhà",
+        "Cách đặt bàn": "Cách đặt bàn",
+        "Điểm nhấn": "Điểm nhấn",
+        "Link hình ảnh": ["Link hình ảnh"]
+    },
+    "Khách sạn": {
+        "Giới thiệu": "Giới thiệu",
+        "Các loại phòng": "Các loại phòng",
+        "Giá phòng": "Giá phòng",
+        "Tiện ích lân cận": "Tiện ích lân cận",
+        "Trải nghiệm": "Trải nghiệm",
+        "Dịch vụ": "Dịch vụ",
+        "Hội viên": "Hội viên",
+        "Link hình ảnh": ["Link hình ảnh"]
+    },
+    "Default": {
+        "Giới thiệu": "Giới thiệu",
+        "Lịch sử ": "Lịch sử'",
+        "Link hình ảnh": ["Link hình ảnh"]
+    }
+}
+
+
 # Tạo danh sách các phần cần chỉnh sửa dựa trên category
 edit_fields = []
- 
+
 if category == "Khách sạn":
     edit_fields = [
         ("verified_info_fromDN", "content", "Content"),
@@ -276,23 +303,38 @@ else:
     ]
  
 # Main form để chỉnh sửa
+# with st.form(key=gen_key(doc_id, "form")):
+#     st.title("Thông tin")
+    
+#     for section, field, label in edit_fields:
+#         if section in content and field in content[section]:
+#             st.write(f"**{label}**")
+#             # content[section][field] = st.text_area(label=f"Edit {label}", value=content[section][field], height=150)
+#             content[section][field] = st_quill(value=content[section][field], toolbar=toolbar)
+ 
+#     submit = st.form_submit_button("Save Changes")
+#     if submit:
+#         # Lưu thay đổi vào MongoDB
+#         update_fields = {}
+#         if "new_info" in content:
+#             update_fields["new_info.Giới thiệu"] = content["new_info"].get("Giới thiệu", "")
+#         if "verified_info_fromDN" in content:
+#             update_fields["verified_info_fromDN.content"] = content["verified_info_fromDN"].get("content", "")
+#         collection.update_one({"_id": ObjectId(doc_id)}, {"$set": update_fields})
+#         st.success("Content saved successfully!")
+ 
 with st.form(key=gen_key(doc_id, "form")):
     st.title("Thông tin")
-    
-    for section, field, label in edit_fields:
-        if section in content and field in content[section]:
-            st.write(f"**{label}**")
-            # content[section][field] = st.text_area(label=f"Edit {label}", value=content[section][field], height=150)
-            content[section][field] = st_quill(value=content[section][field], toolbar=toolbar)
- 
-    submit = st.form_submit_button("Save Changes")
-    if submit:
-        # Lưu thay đổi vào MongoDB
-        update_fields = {}
-        if "new_info" in content:
-            update_fields["new_info.Giới thiệu"] = content["new_info"].get("Giới thiệu", "")
-        if "verified_info_fromDN" in content:
-            update_fields["verified_info_fromDN.content"] = content["verified_info_fromDN"].get("content", "")
-        collection.update_one({"_id": ObjectId(doc_id)}, {"$set": update_fields})
-        st.success("Content saved successfully!")
- 
+
+    st.write("**:blue[ID]**")
+    st.container(border=True).write(content["ID"])
+    st.write("**:blue[Category]**")
+    st.container(border=True).write(content["Category"])
+    for field in content["new_info"]:
+        value = content["new_info"][field]
+        if type(value) == type(""):
+            st.write(f"**:blue[{field}]**")
+            content['new_info'][field] = st_quill(toolbar=toolbar, value=content["new_info"][field])
+
+
+    submit = st.form_submit_button("Save changes")
